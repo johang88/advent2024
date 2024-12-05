@@ -38,7 +38,7 @@ void day5(List<String> input) {
 
   bool validate(List<int> printing) {
     for (var i = 1; i < printing.length; i++) {
-      if (validateItem(printing, i) == -1) return false;
+      if (validateItem(printing, i) != -1) return false;
     }
 
     return true;
@@ -67,9 +67,10 @@ void day5(List<String> input) {
       sum += printing[printing.length ~/ 2];
     } else {
       fixup(printing);
-      sum += printing[printing.length ~/ 2];
+      fixedSum += printing[printing.length ~/ 2];
     }
   }
 
   print(sum);
+  print(fixedSum);
 }

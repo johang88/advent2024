@@ -7,7 +7,7 @@ import 'package:adventofcode/day5.dart' show day5;
 
 void main(List<String> arguments) {
   const defaultDay = 'day5';
-  final useSampleInput = arguments.length > 1 ? arguments[1] == '--sample' : true;
+  final useSampleInput = arguments.length > 1 ? arguments[1] == '--sample' : false;
   final day = arguments.isNotEmpty ? arguments[0] : defaultDay;
   final inputFilePath = 'data/$day${useSampleInput ? '_sample' : ''}.txt';
 
