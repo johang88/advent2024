@@ -5,9 +5,10 @@ import 'package:adventofcode/day3.dart' show day3;
 import 'package:adventofcode/day4.dart' show day4;
 import 'package:adventofcode/day5.dart' show day5;
 import 'package:adventofcode/day6.dart' show day6;
+import 'package:adventofcode/day7.dart' show day7;
 
 void main(List<String> arguments) {
-  const defaultDay = 'day6';
+  const defaultDay = 'day7';
   final useSampleInput = arguments.length > 1 ? arguments[1] == '--sample' : false;
   final day = arguments.isNotEmpty ? arguments[0] : defaultDay;
   final inputFilePath = 'data/$day${useSampleInput ? '_sample' : ''}.txt';
@@ -22,5 +23,6 @@ void main(List<String> arguments) {
     'day4': day4,
     'day5': day5,
     'day6': day6,
+    'day7': day7,
   })[day]!(inputLines);
 }
