@@ -10,48 +10,32 @@ int countDigits(int n) {
   return count;
 }
 
-List<int> iterate(List<int> stones) {
-  var output = List<int>.empty(growable: true);
-
-  for (var stone in stones) {
-    if (stone == 0) {
-      output.add(stone + 1);
-    } else {
-      var digits = countDigits(stone);
-      if (digits % 2 == 0) {
-        digits = digits ~/ 2;
-
-        final stone1 = stone ~/ pow(10, digits).floor();
-        final stone2 = (stone % pow(10, digits).floor());
-        output.add(stone1);
-        output.add(stone2);
-      } else {
-        output.add(stone * 2024);
-      }
-    }
-  }
-
-  return output;
-}
-
 class Key
 {
-  final int i;
-  final int s;
+  int s;
+  int i;
 
-  Key(this.i, this.s);
+  Key(this.s, this.i);
+
+  @override
+  bool operator==(Object other) =>
+      other is Key && s == other.s && i == other.i;
+
+  @override
+  int get hashCode => Object.hash(s, i);
 }
 
-int countStones(Map<Key, int> lookup, int stone, int i, int iterations) {
-  if (i == iterations) return 1; // All done
+int countStones(Map<Key, int> cache, int stone, int i) {
+  if (i == 0) return 1; // All done
 
-  final key = Key(stone, stone);
-  if (lookup.containsKey(key)) return lookup[key]!;
+  final key = Key(stone, i);
+  if (cache.containsKey(key)) {
+    return cache[key]!;
+  }
 
   var count = 0;
   if (stone == 0) {
-    stone = stone + 1;
-    count = countStones(lookup, stone, i + 1, iterations);
+    count = countStones(cache, stone + 1, i - 1);
   } else {
     var digits = countDigits(stone);
       if (digits % 2 == 0) {
@@ -60,13 +44,14 @@ int countStones(Map<Key, int> lookup, int stone, int i, int iterations) {
         final stone1 = stone ~/ pow(10, digits).floor();
         final stone2 = (stone % pow(10, digits).floor());
 
-        count = countStones(lookup, stone1, i + 1, iterations) + countStones(lookup, stone2, i + 1, iterations);
+        count = countStones(cache, stone1, i - 1) + countStones(cache, stone2, i - 1);
       } else {
-        count = countStones(lookup, stone * 2024, i + 1, iterations);
+        count = countStones(cache, stone * 2024, i - 1);
       }
   }
 
-  lookup[key] = count;
+  cache[key] = count;
+
   return count;
 }
 
@@ -74,9 +59,15 @@ void day11(List<String> input) {
   final stones = input[0].split(' ').map((s) => int.parse(s)).toList();
 
   var part1 = 0;
-  var lookup = <Key, int>{};
+  var cache = <Key, int>{};
   for (var stone in stones) {
-    part1 += countStones(lookup, stone, 0, 25);
+    part1 += countStones(cache, stone, 25);
   }
   print(part1);
+
+  var part2 = 0;
+  for (var stone in stones) {
+    part2 += countStones(cache, stone, 75);
+  }
+  print(part2);
 }
