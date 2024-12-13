@@ -9,6 +9,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   args: ^2.4.2
+  equations: ^5.0.2
 
 dev_dependencies:
   lints: ^4.0.0
