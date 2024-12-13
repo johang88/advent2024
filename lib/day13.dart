@@ -1,5 +1,4 @@
 import 'point.dart';
-import 'package:equations/equations.dart';
 
 void day13(List<String> input) {
   final regex = RegExp(r'X[\+\=]([0-9]+), Y[\+\=]([0-9]+)');
@@ -16,21 +15,12 @@ void day13(List<String> input) {
     var buttonA = parsePoint(input[i + 0]);
     var buttonB = parsePoint(input[i + 1]);
     var prize = parsePoint(input[i + 2]);
+
     prize.x += 10000000000000;
     prize.y += 10000000000000;
 
-    final matrix = RealMatrix.fromData(rows: 2, columns: 2, data: [
-      [buttonA.x.toDouble(), buttonB.x.toDouble()],
-      [buttonA.y.toDouble(), buttonB.y.toDouble()]
-    ]);
-
-    final knownValues = [prize.x.toDouble(), prize.y.toDouble()];
-
-    final solver = LUSolver(matrix: matrix, knownValues: knownValues);
-    final solutions = solver.solve();
-
-    final a = solutions[0].round();
-    final b = solutions[1].round();
+    final a = ((prize.y * buttonB.x - buttonB.y * prize.x) / (buttonB.x * buttonA.y - buttonB.y * buttonA.x)).round();
+    final b = ((prize.x - buttonA.x * a) / buttonB.x).round();
 
     if (buttonA.x * a + buttonB.x * b == prize.x && buttonA.y * a + buttonB.y * b == prize.y) {
       cost += a * 3 + b * 1;
